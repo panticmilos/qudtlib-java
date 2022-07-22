@@ -53,6 +53,6 @@ jobs:
           git config user.name ${{ github.actor }}
           git config user.email "<>"
     - name: Build with Maven, deploying to sonatype staging repo
-      run: mvn -B release:clean release:prepare release:perform -Dpassword=$GITHUB_PAT -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }}
+      run: mvn -B release:clean release:prepare release:perform -Dpassword=$GITHUB_PAT -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }} -Dgpg.passphrase=$MAVEN_GPG_PASSPHRASE
     - name: Print summary
       run: echo "Release ${{ inputs.release_version }} deployed to sonatype staging repo. Please go there, close the repo and publish it." >> $GITHUB_STEP_SUMMARY
