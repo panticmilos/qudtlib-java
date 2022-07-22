@@ -45,7 +45,7 @@ jobs:
         gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }} # env variable for GPG private key passphrase
 
     - name: Build with Maven, deploying to sonatype staging repo
-      run: mvn -B release:clean release:prepare release:perform -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }} -Dusername=${{ secrets.GITHUB_USERNAME }} -Dpassword=${{ secrets.GITHUB_TOKEN }}
+      run: mvn -B release:clean release:prepare release:perform -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }} -Dpassword=${{ secrets.GITHUB_TOKEN }}
       env:
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
