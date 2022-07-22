@@ -48,8 +48,9 @@ jobs:
           git config user.name ${{ github.actor }}
           git config user.email "<>"
     - name: Build with Maven, deploying to sonatype staging repo
-      run: mvn -B release:clean release:prepare release:perform -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }} -Dpassword=${{ secrets.QUDTLIB_BOT_GITHUB_TOKEN }}
+      run: mvn -B release:clean release:prepare release:perform -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }} -Dpassword=${GITHUB_TOKEN}
       env:
+        GITHUB_TOKEN: ${{ QUDTLIB_BOT_GITHUB_TOKEN }}
         MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
         MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}   
