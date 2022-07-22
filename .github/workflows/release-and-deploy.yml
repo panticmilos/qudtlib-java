@@ -4,6 +4,11 @@
 # deploys it to the sonatype staging repo
 name: Release and deploy to Sonatype staging repo
 
+env:
+  GITHUB_PAT: ${{ secrets.QUDTLIB_BOT_GITHUB_TOKEN }}
+  MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+  MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+  MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}   
 on:
   workflow_dispatch:
     inputs:
@@ -39,20 +44,15 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
         server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
-        server-username: ${{ secrets.MAVEN_USERNAME }} # env variable for username in deploy
-        server-password: ${{ secrets.MAVEN_CENTRAL_TOKEN }} # env variable for token in deploy
-        gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
-        gpg-passphrase: ${{ secrets.MAVEN_GPG_PASSPHRASE }} # env variable for GPG private key passphrase
+        server-username: MAVEN_USERNAME  # env variable for username in deploy
+        server-password: MAVEN_CENTRAL_TOKEN  # env variable for token in deploy
+        gpg-private-key: MAVEN_GPG_PRIVATE_KEY  # Value of the GPG private key to import
+        gpg-passphrase: MAVEN_GPG_PASSPHRASE  # env variable for GPG private key passphrase
     - name: setup git config
       run: |
           git config user.name ${{ github.actor }}
           git config user.email "<>"
     - name: Build with Maven, deploying to sonatype staging repo
-      run: mvn -B release:clean release:prepare release:perform -Dpassword=${{ secrets.QUDTLIB_BOT_GITHUB_TOKEN }} -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }}
-      env:
-        GITHUB_TOKEN: ${{ secrets.QUDTLIB_BOT_GITHUB_TOKEN }}
-        MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-        MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
-        MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}   
+      run: mvn -B release:clean release:prepare release:perform -Dpassword=$GITHUB_PAT -Dproject.version=${{ inputs.release_version }} -DdevelopmentVersion=${{ inputs.next_snapshot_version }}
     - name: Print summary
       run: echo "Release ${{ inputs.release_version }} deployed to sonatype staging repo. Please go there, close the repo and publish it." >> $GITHUB_STEP_SUMMARY
