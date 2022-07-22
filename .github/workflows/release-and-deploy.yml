@@ -4,8 +4,9 @@
 # deploys it to the sonatype staging repo
 name: Release and deploy to Sonatype staging repo
 
-on: workflow_dispatch
-  inputs:
+on:
+  workflow_dispatch:
+    inputs:
       release_version:
         description: 'Release version (such as 2.3.13)'     
         required: true
