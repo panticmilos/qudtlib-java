@@ -44,7 +44,6 @@ jobs:
     - name: Install gpg secret key
       run: |
         cat <(echo -e $MAVEN_GPG_PRIVATE_KEY) | gpg --batch --import
-        gpg --list-secret-keys --keyid-format LONG
     - name: Set up Apache Maven Central
       uses: actions/setup-java@v3
       with: # running setup-java again overwrites the settings.xml
