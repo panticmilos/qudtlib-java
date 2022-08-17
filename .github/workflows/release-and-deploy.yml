@@ -38,13 +38,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '11'
-    - name: install CA certs
-      run: |
-        sudo apt-get update
-        sudo apt-get install ca-certificates
-    - name: Install gpg secret key
-      run: |
-        cat <(echo -e $MAVEN_GPG_PRIVATE_KEY) | gpg --batch --import
     - name: Set up Apache Maven Central
       uses: actions/setup-java@v3
       with: # running setup-java again overwrites the settings.xml
