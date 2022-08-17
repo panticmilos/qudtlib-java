@@ -37,6 +37,10 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '11'
+    - name: install CA certs
+      run: |
+        apt-get update
+        apt-get install ca-certificates
     - name: Install gpg secret key
       run: |
         cat <(echo -e $MAVEN_GPG_PRIVATE_KEY) | gpg --batch --import
